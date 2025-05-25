@@ -31,7 +31,7 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.21.0"
+  version = "19.10.0"
 
   cluster_name    = "ecommerce-cluster"
   cluster_version = "1.27"
@@ -55,7 +55,7 @@ module "eks" {
 
 module "eks_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/auth"
-  version = "19.21.0"
+  version = "19.10.0"
 
   cluster_name = module.eks.cluster_name
 
