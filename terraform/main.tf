@@ -39,12 +39,27 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  enable_irsa = true
-
+  enable_irsa                     = true
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
-    manage_aws_auth_configmap = true
+  eks_managed_node_groups = {
+    default = {
+      desired_size   = 2
+      max_size       = 2
+      min_size       = 1
+      instance_types = ["t3.medium"]
+    }
+  }
+}
+
+module "eks_auth" {
+  source  = "terraform-aws-modules/eks/aws//modules/auth"
+  version = "20.8.4"
+
+  cluster_name = module.eks.cluster_name
+
+  create_aws_auth_configmap = true
 
   aws_auth_users = [
     {
@@ -53,14 +68,6 @@ module "eks" {
       groups   = ["system:masters"]
     }
   ]
-
-  eks_managed_node_groups = {
-    default = {
-      desired_size = 2
-      max_size     = 2
-      min_size     = 1
-
-      instance_types = ["t3.medium"]
-    }
-  }
 }
+
+
