@@ -44,6 +44,16 @@ module "eks" {
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
+    manage_aws_auth_configmap = true
+
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::207567759296:user/preye_aws"
+      username = "preye_aws"
+      groups   = ["system:masters"]
+    }
+  ]
+
   eks_managed_node_groups = {
     default = {
       desired_size = 2
