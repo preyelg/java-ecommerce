@@ -31,7 +31,7 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.10.0"
+  version = "20.8.4"
 
   cluster_name    = "ecommerce-cluster"
   cluster_version = "1.27"
@@ -52,23 +52,3 @@ module "eks" {
     }
   }
 }
-
-module "eks_auth" {
-  source  = "terraform-aws-modules/eks/aws//modules/auth"
-  version = "19.10.0"
-
-  cluster_name = module.eks.cluster_name
-
-  create_aws_auth_configmap = true
-
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::207567759296:user/preye_aws"
-      username = "preye_aws"
-      groups   = ["system:masters"]
-    }
-  ]
-}
-
-
-
